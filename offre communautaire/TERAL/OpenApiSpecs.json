@@ -1,0 +1,266 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Teral API",
+    "description": "Teral  API documentation",
+    "contact": {},
+    "license": {
+      "name": "Free API 2.0",
+      "url": "https://www.free.sn/licenses/LICENSE-2.0.html"
+    },
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "//api.rec.free.com/community-offer"
+    }
+  ],
+  "tags": [
+   
+  ],
+  "paths": {
+    
+    "/api/TeralGateway/v1/GetMyPoints": {
+      "get": {
+        "tags": [
+          "TeralGateway"
+        ],
+        "summary": "Return Total User Points",
+        "description": " This operations Gets the total points from a user and returns it",
+        "operationId": "GetMyPoints",
+        "parameters": [
+          {
+            "name": "phone",
+            "in": "path",
+            "description": "Phone number of the client",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Number of Teral points for the suscriber",
+            "content": {
+              "text/plain": {
+                "schema": {
+                "type":"integer",
+                "example":200
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/TeralGateway/v1/exchange_for_product": {
+      "post": {
+        "tags": [
+          "TeralGateway"
+        ],
+        "summary": "Exchange some Teral points for a product",
+        "description": " This operation add one line of product_instance,get from database the product information, buy the product on CBS, recalculate the number of points and update the database User.NbPoints ",
+        "operationId": "ExchangeForProduct",
+        "requestBody":{
+          "content": {
+           "application/json": {
+             "schema": {
+               "$ref": "#/components/schemas/ExchangeForBodyRequest"
+             }
+           }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200  Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+ 
+    "/api/TeralGateway/v1/NotifyOperation/{request}": {
+      "get": {
+        "tags": [
+          "TeralGateway"
+        ],
+        "summary": "Notifiy the TeralGateway from a new  operation",
+        "description": "When the user perform an operation, the RTN notify through the Access Gateway the TeralGateway. This notification is done syncrhonously but the call to the microservice is done asyncrhonously. The Api gets a string to parse befor calling the microservice",
+        "operationId": "Change customer offer",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "path",
+            "description": "GET /servlet/RequestS2?request=1|1|1|123456|234567||0|1 HTTP/1.0",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "string",
+            "content": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+
+    "/api/TeralMircroservices/v1/GetMyPoints": {
+      "get": {
+        "tags": [
+          "TeralMicroservices"
+        ],
+        "summary": "Return Total User Points",
+        "description": " This operations Gets the total points from a user and returns it",
+        "operationId": "GetMyPoints",
+        "parameters": [
+          {
+            "name": "phone",
+            "in": "path",
+            "required": true,
+            "description": "Phone number of the client",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200  Ok",
+            "content": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/TeralMircroservices/v1/NotifyOperations": {
+      "post": {
+        "tags": [
+          "TeralMicroservices"
+        ],
+        "summary": "Return Total User Points",
+        "description": " This operations Gets the total points from a user and returns it",
+        "operationId": "NotifyMc",
+        "requestBody":{
+           "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotifyOperationRequest"
+              }
+            }
+           },
+           "description": "",
+           "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "200  Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GenericResponse": {
+        "title": "GenericResponse",
+        "required": [
+          "StatusWording",
+          "StatusCode"
+        ],
+        "type": "object",
+        "properties": {
+          "StatusWording": {
+            "type": "integer"
+          },
+          "StatusCode": {
+            "type": "integer",
+            "description": "info",
+            "example": null,
+            "default": null
+          
+        }
+      }
+    },
+
+    "ExchangeForBodyRequest": {
+      "title": "ExchangeForBodyRequest",
+      "required": [
+        "StatusWording",
+        "StatusCode"
+      ],
+      "type": "object",
+      "properties": {
+        "phone": {
+          "type": "integer"
+        },
+        "productId": {
+          "type": "integer",
+          "description": "Local id of the product to buy",
+          "example": 12
+          
+        
+      }
+    }
+  },
+
+      "NotifyOperationRequest": {
+        "title": "NotifyOperationRequest",
+        "required": [
+          "ServiceType",
+          "SubServiceFlow"
+        ],
+        "type": "object",
+        "properties": {
+          "ServiceType": {
+            "type": "integer",
+            "example": "1：voice 2：sms 3：MMS 4：GPRS 5：recharge 6：transfer balance 7：query balance 8：low balance notification after call 9：order appendant product 10：RBT charging 11：product expired notification 12：rent for cyclicity product "
+          },
+          "SubServiceFlow": {
+            "type": "integer",
+            "description": "info",
+            "example": null,
+            "default": null
+          },
+          "GPRSChargeType": {
+            "type": "integer"
+          },
+          "CallingNumber": {
+            "type": "string"
+          },
+          "CalledNumber": {
+            "type": "string"
+          },
+          "Amount": {
+            "type": "integer"
+          },
+          "ProductKey": {
+            "type": "integer"
+          },
+          "ProductOrderKey": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,133 @@
+@startuml
+|Final_User|
+start
+: Enter Resuscribe Option;
+
+|USSD|
+: Get User Communities;
+If ( OK) then 
+else if (TimeoutException)
+:retry 3 times <
+stop
+else 
+#red:Error(ERR_ENR01)<
+stop
+endif
+
+|Talend|
+: Get User Communities;
+If ( OK) then 
+else if (TimeoutException)
+:retry 3 times <
+stop
+else 
+#red:Error(ERR_ENR01)<
+stop
+endif
+
+|Gateway|
+: Get User Communities;
+If ( OK) then 
+else if (TimeoutException)
+:retry 3 times <
+stop
+else 
+#red:Error(ERR_ENR01)<
+stop
+endif
+
+|CommunityMicroservice|
+: Get User Communities;
+If (Enroll OK) then 
+else 
+#red:Error(ERR_ENR01)<
+stop
+endif
+
+|Final_User|
+: Choose community ;
+|USSD|
+: Resuscribe User;
+If ( OK) then 
+else if (TimeoutException)
+:retry 3 times <
+stop
+else 
+#red:Error(ERR_ENR01)<
+stop
+endif
+
+|Talend|
+: Resuscribe User;
+If ( OK) then 
+else if (TimeoutException)
+:retry 3 times <
+stop
+else 
+#red:Error(ERR_ENR01)<
+stop
+endif
+
+
+|Gateway|
+: Get member informations;
+If ( OK) then 
+else if (TimeoutException)
+:retry 3 times <
+stop
+else 
+#red:Error(ERR_ENR01)<
+stop
+endif
+
+
+|CommunityMicroservice|
+: Get member informations;
+If ( OK) then 
+else if (TimeoutException)
+:retry 3 times <
+stop
+else 
+#red:Error(ERR_ENR01)<
+stop
+endif
+
+
+|Gateway|
+: Positionner Offre;
+If ( OK) then 
+else if (TimeoutException)
+:retry 3 times <
+stop
+else 
+#red:Error(ERR_ENR01)<
+stop
+endif
+
+
+|BundleMicroservice|
+: Check User Status;
+If ( OK) then 
+else if (TimeoutException)
+:retry 3 times <
+stop
+else 
+#red:Error(ERR_ENR01)<
+stop
+endif
+
+
+|BundleMicroservice|
+: Transfert 500 "Compte service ->new freemoney account";
+If ( OK) then 
+else 
+#red:Error(ERR_ENR01)<
+stop
+endif
+
+: Update Operation Status;
+
+end
+
+
+@enduml

@@ -1,0 +1,37 @@
+@startuml
+autonumber
+Actor Agent_Free
+participant Front_Office
+participant Gateway
+participant CommunityMicroservice
+participant BundleMicroservice
+database DB_Community
+participant BE_freemoney
+participant DE
+
+
+
+
+Agent_Free->Front_Office: Set client informations
+Front_Office->Gateway: Suscribe new member on community
+
+Gateway->CommunityMicroservice: Add new member
+CommunityMicroservice->DB_Community: Add new Member
+CommunityMicroservice->CommunityMicroservice: Update Operation Status
+CommunityMicroservice-->Gateway: New member added
+
+
+Gateway->BundleMicroservice: Positionner Bundle
+BundleMicroservice->BE_freemoney: Cashin 6500 compte freelancer vers compte technique
+BundleMicroservice->BundleMicroservice: Update Operation Status (FREELANCER_DEBIT/FREELANCER_FAIL)
+BundleMicroservice->DE: Positionner Bundle
+BundleMicroservice->BundleMicroservice: Update Operation Status(BUNDLE_ON/BUNDLE_FAIL)
+BundleMicroservice->DE: Ajouter premier membre au GFU
+BundleMicroservice->BundleMicroservice: Update Operation Status(GFU_ON/GFU_FAIL)
+BundleMicroservice->BE_freemoney: Cashin 500f Compte Technique vers compte client
+BundleMicroservice->BundleMicroservice: Update Operation Status(MONEY_CLIENT_ON/MONEY_CLIENT_FAIL)
+BundleMicroservice->Gateway: New Bundle Set
+
+Gateway->Front_Office: Community Enrolled
+
+@enduml

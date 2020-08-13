@@ -1,0 +1,16 @@
+@startuml
+boundary RTN
+participant AccessGateway
+participant TeralGateway
+participant TeralMicroservice
+database TeralDB
+
+RTN->AccessGateway: Notify user operation 
+AccessGateway->TeralGateway: Notify user operation
+TeralGateway-->AccessGateway: Notification Ok
+TeralGateway->TeralMicroservice:@Async Notify user operation
+TeralMicroservice->TeralDB: Save user operation
+TeralDB-->TeralMicroservice: Record Ok
+TeralMicroservice-->TeralGateway: Record Ok
+
+@enduml

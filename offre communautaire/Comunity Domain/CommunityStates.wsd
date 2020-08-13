@@ -1,0 +1,20 @@
+@startuml
+
+
+
+COM_CREATED : The community is created
+COM_ARCHIVED : The community has no member since X months
+COM_ARCHIVED: The community is then retired from the active DB 
+COM_ARCHIVED: and Saved from the Archive DB
+COM_BLACKLISTED: The community is blacklisted
+
+
+
+[*] --> COM_CREATED
+COM_CREATED --> COM_ARCHIVED
+COM_CREATED-->COM_BLACKLISTED
+COM_ARCHIVED-->COM_CREATED
+COM_BLACKLISTED-->COM_CREATED
+COM_ARCHIVED --> [*]
+
+@enduml

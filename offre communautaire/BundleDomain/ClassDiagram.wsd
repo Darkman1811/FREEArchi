@@ -1,0 +1,26 @@
+@startuml
+
+  class Bundle{
+  #Integer Id
+  String bundleName
+  String bundleCode
+  }
+  
+  Interface GenericInfoDetails{
+  #Integer Id
+  String InformationLabel
+  String InformationValue
+  }
+  
+  class BundleDetails{
+  }
+  
+ class BundleHistory{
+ 
+ }
+
+Bundle-->BundleDetails
+
+GenericInfoDetails<|-BundleDetails
+Bundle<|-BundleHistory
+@enduml

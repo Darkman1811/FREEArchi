@@ -1,0 +1,42 @@
+@startuml
+class Community {
+  #Integer Id
+  String name
+  String idNumber
+  Member headMember
+  Date creationDate
+  Date expirationDate
+  String Status
+  }
+
+class Member {
+  #Integer Id
+  String fullName
+  String lastName
+  String phoneNumber
+  String idType
+   String idNumber
+  String channel
+  String idAgent
+  Date creationDate
+  Date expirationDate
+  String Status
+  }
+  
+
+  
+  Interface GenericInfoDetails{
+  #Integer Id
+  String InformationLabel
+  String InformationValue
+  }
+  
+ 
+  class CommunityDetails{
+  }
+  
+Community->Member
+Community-->CommunityDetails
+
+GenericInfoDetails<|-CommunityDetails
+@enduml

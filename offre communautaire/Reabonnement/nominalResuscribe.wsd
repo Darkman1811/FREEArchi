@@ -1,0 +1,45 @@
+@startuml
+autonumber
+Actor Final_User
+participant USSD
+participant Talend
+participant Gateway
+participant CommunityMicroservice
+participant BundleMicroservice
+database DB_Community
+participant BE_freemoney
+participant DE
+
+
+
+
+Final_User->USSD: Enter Resuscribe Option
+USSD->Talend: Get User Communities
+Talend->Gateway: Get User Communities
+Gateway->CommunityMicroservice: Get User Communities
+CommunityMicroservice->DB_Community: Get User Communities
+CommunityMicroservice-->Gateway: User Communities
+Gateway-->Talend:  User Communities
+Talend-->USSD:  User Communities
+
+Final_User->USSD: Choose community 
+USSD->Talend: Resuscribe User
+Talend->Gateway: Resuscribe User
+
+Gateway->CommunityMicroservice: Get member informations
+CommunityMicroservice->DB_Community: Get member informations
+
+CommunityMicroservice-->Gateway: Member informations
+Gateway->BundleMicroservice: Positionner Offre
+BundleMicroservice->DE: Check User Status
+DE-->BundleMicroservice: User Status
+BundleMicroservice->BE_freemoney: Transfert 500 "Compte service ->new freemoney account"
+BE_freemoney-->BundleMicroservice: Transfert OK
+BundleMicroservice->BundleMicroservice: Update Operation Status
+
+BundleMicroservice-->Gateway: New Bundle Set
+
+Gateway-->Talend: Resuscribtion completed
+Talend->USSD: Resuscribtion completed
+
+@enduml

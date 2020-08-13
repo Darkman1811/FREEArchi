@@ -1,0 +1,21 @@
+@startuml
+ title Member State Diagramme
+
+MEM_CREATED: Member is created
+MEM_ACTIF: Member is active
+MEM_UNACTIF: Member in unactive on a community
+MEM_UNACTIF: If ther no active bundle on his community
+MEM_ARCHIVED: Member is archived after  
+MEM_ARCHIVED: X month on inactive state on all his communities
+MEM_BLACLISTED: Member is blacklisted
+
+[*] --> MEM_CREATED
+MEM_CREATED --> MEM_ACTIF
+MEM_ACTIF->MEM_UNACTIF
+MEM_UNACTIF->MEM_ACTIF
+MEM_ACTIF-->MEM_BLACLISTED
+MEM_BLACLISTED-->MEM_ACTIF
+MEM_UNACTIF->MEM_ARCHIVED
+MEM_ARCHIVED->MEM_UNACTIF
+MEM_ARCHIVED-->[*]
+@enduml

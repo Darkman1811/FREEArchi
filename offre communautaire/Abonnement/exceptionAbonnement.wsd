@@ -1,0 +1,99 @@
+@startuml
+|Agent_Free|
+start
+: Get community informations;
+: Saisie information client;
+|Front_Office|
+: Enroll new community;
+If (Enroll OK) then 
+else if (TimeoutException)
+:retry 3 times <
+stop
+else 
+#red:Error(ERR_ENR01)<
+stop
+endif
+
+|Gateway|
+:Add new member;
+if( Ok) then
+else if (Timeout Exception) then
+:Retry 3 Times}
+stop
+else 
+#red:Error(ERR_ENR01)<
+stop
+endif
+
+|CommunityMicroservice|
+
+:Add new member;
+if( Ok) then
+else
+#red:Error(ERR_ENR01)<
+stop
+endif
+
+if( Client non Free ) then (yes)
+: Activate Sim;
+if( Ok) then
+else
+#red:Error(ERR_ENR01)<
+stop
+endif
+
+: Update Operation Status;
+endif
+
+: Positionner GFU;
+if( Ok) then
+:Update Community State To Active;
+else
+:Update Trasaction Status;
+#red:Error(ERR_ENR01)<
+stop
+endif
+
+: Update Operation Status;
+|Gateway|
+:Set Bundle;
+if (statuscode=200 Ok) then (yes)
+else if (Timeout Exception) then
+#red:Retry 3 Times}
+stop
+else 
+:Error(ERR_ENR01)<
+stop
+endif
+
+|BundleMicroservice|
+if(Client non Freemoney) then (yes)
+: Create Freemoney account;
+if( Ok) then
+
+     : Transfert 500 "Compte service ->new freemoney account";
+     if( Ok) then
+       :Set member state to MEM_ACTIF;
+     else
+       #red:Error(ERR_ENR01)<
+       stop
+     endif
+     else
+       #red:Error(ERR_ENR01)<
+     stop
+     endif
+
+endif
+
+
+
+: Update Operation Status;
+
+|Gateway|
+: New community added;
+
+|Front_Office|
+: Community Enrolled;
+stop
+
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+
+title Bundle State Diagram
+
+BUNDLE_ONGOING : The actual on goin bundle
+BUNDLE_PENDING : Bundles waiting for the on going bundle to finish
+BUNDLE_ARCHIVED: Already used bundle 
+
+
+
+
+[*] --> BUNDLE_ONGOING
+[*]  --> BUNDLE_PENDING
+BUNDLE_ONGOING-->BUNDLE_ARCHIVED
+BUNDLE_ARCHIVED --> [*]
+
+@enduml

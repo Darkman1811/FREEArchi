@@ -1,0 +1,51 @@
+@startuml
+autonumber
+Actor Agent_Free
+participant Front_Office
+participant Gateway
+participant CommunityMicroservice
+database DB_Community
+participant BundleMicroservice
+database DB_Bundle
+database DB_Gateway
+participant BE_freemoney
+participant DE
+
+
+
+
+Agent_Free->Front_Office: Saisie information de la communauté
+Agent_Free->Front_Office: Saisie information client
+Front_Office->Gateway: Enroll new community
+Gateway->CommunityMicroservice: add new community
+CommunityMicroservice->DB_Community: Check community status
+
+CommunityMicroservice->DB_Community: Get communityType bundle information
+CommunityMicroservice->DB_Community: Add new community
+CommunityMicroservice-->Gateway: New community added
+
+Gateway->BundleMicroservice: CreateGFU(GFU_NAME)
+BundleMicroservice->BE_freemoney: CreateGFU(GFU_NAME)
+BE_freemoney-->BundleMicroservice: GFU created
+BundleMicroservice-->Gateway: GFU created
+
+Gateway->CommunityMicroservice: Add new member
+CommunityMicroservice->DB_Community: Add new Member
+CommunityMicroservice->DB_Community: Update Operation Status
+CommunityMicroservice-->Gateway: New member added
+
+Gateway->BundleMicroservice: Positionner Bundle
+BundleMicroservice->BE_freemoney: Cashin 6500 compte freelancer vers compte technique
+BundleMicroservice->BundleMicroservice: Update Operation Status (FREELANCER_DEBIT/FREELANCER_FAIL)
+BundleMicroservice->DE: Positionner Bundle
+BundleMicroservice->BundleMicroservice: Update Operation Status(BUNDLE_ON/BUNDLE_FAIL)
+BundleMicroservice->DE: Ajouter premier membre au GFU
+BundleMicroservice->BundleMicroservice: Update Operation Status(GFU_ON/GFU_FAIL)
+BundleMicroservice->BE_freemoney: Cashin 500f Compte Technique vers compte client
+BundleMicroservice->BundleMicroservice: Update Operation Status(MONEY_CLIENT_ON/MONEY_CLIENT_FAIL)
+BundleMicroservice->Gateway: New Bundle Set
+
+
+Gateway->Front_Office: Community Enrolled
+
+@enduml

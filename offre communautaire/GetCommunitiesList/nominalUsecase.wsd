@@ -1,0 +1,20 @@
+@startuml
+Actor Final_Client
+participant USSD
+participant Talend
+participant Gateway
+participant CommunityMicroservice
+database DB_Community
+
+
+Final_Client -> USSD: Enter menu "Mes communautés"
+USSD->Talend: Get bundle list
+Talend->Gateway: Get bundle list
+Gateway->CommunityMicroservice: Get community list
+CommunityMicroservice->DB_Community: Get community list
+DB_Community-->CommunityMicroservice: List of communities
+CommunityMicroservice-->Gateway: List of communities
+Gateway-->Talend: List of communities
+Talend-->USSD: List of communities
+USSD-->Final_Client: List of communities
+@enduml

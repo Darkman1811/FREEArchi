@@ -1,0 +1,26 @@
+@startuml
+autonumber
+control Batch_desactivation_gfu
+participant Gateway
+participant CommunityMicroservice
+participant BundleMicroservice
+database DB_Bundle
+participant BE_freemoney
+participant CBS
+participant AccessGateway
+participant RTN
+
+
+
+RTN->AccessGateway: Notify Operation
+AccessGateway->Gateway: Notify Operation
+Gateway->BundleMicroservice: Desactivate GFU
+BundleMicroservice->DB_Bundle: Add desactivation line 
+
+alt @Schedulled_Task
+BundleMicroservice->DB_Bundle: Get desactivation lines
+BundleMicroservice->CBS: Desactivate GFU
+CBS-->BundleMicroservice: GFU Desactivated
+BundleMicroservice->DB_Bundle: Remove desactivation line
+end
+@enduml

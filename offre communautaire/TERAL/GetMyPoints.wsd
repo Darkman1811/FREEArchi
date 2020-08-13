@@ -1,0 +1,22 @@
+@startuml
+
+autonumber
+
+actor User
+participant USSD
+participant TeralGateway
+participant TeralMicroservice
+database TeralDB
+
+
+
+User->USSD: Get my points
+USSD->TeralGateway: Get my points
+TeralGateway->TeralMicroservice: Get my points
+TeralMicroservice->TeralDB: Select User(phone).getPoints
+TeralDB-->TeralMicroservice:  
+TeralMicroservice-->TeralGateway:  Points
+TeralGateway-->USSD:  Points
+USSD-->User: Points
+
+@enduml

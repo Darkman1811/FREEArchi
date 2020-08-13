@@ -1,0 +1,50 @@
+@startuml
+left to right direction
+actor "User" as user
+actor "Agent_Free" as agent_Free
+actor "Agent_terrain" as agent_terrain
+
+package Security {
+usecase "login" as UC_SEC1
+usecase "Athenticate" as UC_SEC2
+}
+package Enregistrement {
+  usecase "Création de la communauté" as UC_ENR1
+  usecase "Enrollement du premier membre" as UC_ENR2
+  usecase "Création GFU" as UC_ENR3
+
+}
+
+
+package Abonnement {
+  usecase "Abonement" as UC_AB1
+  usecase "Création sim" as UC_AB2
+  usecase "Création compte FreeMoney" as UC_AB3
+  usecase "Positionnement offre" as UC_AB4
+  usecase "Renouvellement" as UC_AB5
+  
+  usecase "Get list of registered commuities" as  UC_AB6 
+  usecase "Check bundle status for a community" as  UC_AB7
+
+}
+
+agent_Free-->UC_SEC1
+agent_Free-->UC_SEC2
+agent_terrain-->UC_SEC2
+
+agent_Free --> UC_ENR1
+UC_ENR1 --> UC_ENR2
+UC_ENR1 --> UC_ENR3
+
+agent_terrain--> UC_AB1
+UC_AB1 -->UC_AB2
+UC_AB1 -->UC_AB3
+UC_AB1->UC_AB4
+
+user-->UC_AB5
+UC_AB5-->UC_AB4
+user-->UC_AB6
+user-->UC_AB7
+
+
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+actor User
+participant USSD
+participant TeralGateway
+participant TeralMicroservice
+database TeralDB
+
+User->USSD: Exchange for product
+USSD->TeralGateway: Get list of products
+TeralGateway->TeralMicroservice:Get list of products
+TeralMicroservice->TeralDB: Get list of products
+TeralDB-->TeralMicroservice:  list of products
+TeralMicroservice-->TeralGateway:  list of products
+TeralGateway-->USSD:  list of products
+
+@enduml

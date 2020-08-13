@@ -1,0 +1,43 @@
+@startuml
+|Final_Client|
+start
+: Enter menu "Mes communautés";
+|USSD|
+: Get bundle list;
+If ( OK) then 
+else if (TimeoutException)
+:retry 3 times <
+stop
+else 
+#red:Error(ERR_ENR01)<
+stop
+endif
+|Talend|
+: Get bundle list;
+If ( OK) then 
+else if (TimeoutException)
+:retry 3 times <
+stop
+else 
+#red:Error(ERR_ENR01)<
+stop
+endif
+|Gateway|
+: Get community list;
+If ( OK) then 
+else if (TimeoutException)
+:retry 3 times <
+stop
+else 
+#red:Error(ERR_ENR01)<
+stop
+endif
+|CommunityMicroservice|
+: Get community list;
+If ( OK) then 
+else 
+#red:Error(ERR_ENR01)<
+stop
+endif
+end
+@enduml
